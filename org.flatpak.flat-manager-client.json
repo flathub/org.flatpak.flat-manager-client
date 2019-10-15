@@ -1,0 +1,126 @@
+{
+    "app-id" : "org.flatpak.flat-manager-client",
+    "runtime" : "org.freedesktop.Platform",
+    "runtime-version" : "18.08",
+    "sdk" : "org.freedesktop.Sdk",
+    "command" : "flat-manager-client",
+    "separate-locales": false,
+    "finish-args" : [
+        "--filesystem=host",
+        "--share=network"
+    ],
+    "modules" : [
+        "pypi-dependencies.json",
+        {
+            "name": "pycairo",
+            "buildsystem": "simple",
+            "build-commands": [
+                "python3 setup.py install --prefix=/app"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/pygobject/pycairo/releases/download/v1.18.1/pycairo-1.18.1.tar.gz",
+                    "sha256": "70172e58b6bad7572a3518c26729b074acdde15e6fee6cbab6d3528ad552b786"
+                }
+            ],
+            "cleanup": [
+                "/include",
+                "/share/pkgconfig"
+            ]
+        },
+        {
+            "name": "pygobject",
+            "buildsystem": "simple",
+            "build-commands": [
+                "python3 setup.py install --prefix=/app"
+            ],
+            "ensure-writable": [
+                "/lib/python*/site-packages/easy-install.pth"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz",
+                    "sha256": "87e2c9aa785f352ef111dcc5f63df9b85cf6e05e52ff04f803ffbebdacf5271a"
+                }
+            ],
+            "cleanup": [
+                "/include",
+                "/lib/pkgconfig",
+                "/lib/python*/site-packages/gi/*.la"
+            ]
+        },
+        {
+            "name" : "libfuse",
+            "config-opts" : [
+                "UDEV_RULES_PATH=/app/etc/udev/rules.d",
+                "INIT_D_PATH=/app/etc/init.d"
+            ],
+            "build-options" : {
+                "env" : {
+                    "MOUNT_FUSE_PATH" : "../tmp/"
+                }
+            },
+            "post-install": [
+                "install -m a+rx fusermount-wrapper.sh /app/bin/fusermount"
+            ],
+            "sources" : [
+                {
+                    "type" : "archive",
+                    "url" : "https://github.com/libfuse/libfuse/releases/download/fuse-2.9.9/fuse-2.9.9.tar.gz",
+                    "sha256" : "d0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5"
+                },
+                {
+                    "type" : "patch",
+                    "path" : "fuse-2.9.2-namespace-conflict-fix.patch"
+                },
+                {
+                    "type" : "patch",
+                    "path" : "fuse-disable-sys-mount-under-flatpak.patch"
+                },
+                {
+                    "type" : "file",
+                    "path" : "fusermount-wrapper.sh"
+                }
+            ]
+        },
+        {
+            "name" : "ostree",
+            "config-opts" : [
+                "--disable-man",
+                "--without-libsystemd"
+            ],
+            "cleanup" : [
+                "/bin",
+                "/etc/grub.d",
+                "/etc/ostree",
+                "/share/ostree",
+                "/libexec"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/ostreedev/ostree.git",
+                    "tag" : "v2019.4",
+                    "commit": "9d39e7d91e8497987cad69a3fbed5c5fc91eebdc"
+                }
+            ]
+        },
+        {
+            "name": "flat-manager-client",
+            "buildsystem": "simple",
+            "build-commands": [
+                "install -Dm755 flat-manager-client /app/bin/flat-manager-client"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/flatpak/flat-manager",
+                    "branch": "wip/async-objects-upload",
+                    "commit": "2b5ab34d83f8072873f5b64e7a293cf4ffb88fea"
+                }
+            ]
+        }
+    ]
+}
