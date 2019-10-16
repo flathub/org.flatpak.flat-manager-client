@@ -118,7 +118,7 @@
                     "type": "git",
                     "url": "https://github.com/flatpak/flat-manager",
                     "branch": "wip/async-objects-upload",
-                    "commit": "2b5ab34d83f8072873f5b64e7a293cf4ffb88fea"
+                    "commit": "c408079161b2fceb5cc6526328cc337b248f50f1"
                 }
             ]
         }
