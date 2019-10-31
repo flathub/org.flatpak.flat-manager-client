@@ -115,7 +115,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/flatpak/flat-manager",
-                    "branch": "wip/async-objects-upload"
+                    "branch": "wip/aiohttp"
                 }
             ]
         }
