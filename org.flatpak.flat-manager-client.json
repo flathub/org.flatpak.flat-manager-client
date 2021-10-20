@@ -100,8 +100,8 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/ostreedev/ostree.git",
-                    "tag" : "v2019.4",
-                    "commit": "9d39e7d91e8497987cad69a3fbed5c5fc91eebdc"
+                    "tag" : "v2021.5",
+                    "commit": "63bf5e606b24c7343bfe622bf6af2110ee6beabc"
                 }
             ]
         },
