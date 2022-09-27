@@ -19,39 +19,8 @@
     "modules" : [
         "pypi-dependencies.json",
         {
-            "name": "pycairo",
-            "buildsystem": "simple",
-            "build-commands": [
-                "python3 setup.py install --prefix=/app"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://github.com/pygobject/pycairo/releases/download/v1.20.1/pycairo-1.20.1.tar.gz",
-                    "sha256": "1ee72b035b21a475e1ed648e26541b04e5d7e753d75ca79de8c583b25785531b"
-                }
-            ]
-        },
-        {
-            "name": "pygobject",
-            "buildsystem": "simple",
-            "build-commands": [
-                "python3 setup.py install --prefix=/app"
-            ],
-            "ensure-writable": [
-                "/lib/python*/site-packages/easy-install.pth"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/pygobject/3.42/pygobject-3.42.0.tar.xz",
-                    "sha256": "9b12616e32cfc792f9dc841d9c472a41a35b85ba67d3a6eb427e307a6fe4367b"
-                }
-            ]
-        },
-        {
-            "name" : "libfuse",
-            "config-opts" : [
+            "name": "libfuse",
+            "config-opts": [
                 "UDEV_RULES_PATH=/app/etc/udev/rules.d",
                 "INIT_D_PATH=/app/etc/init.d"
             ],
@@ -63,23 +32,23 @@
             "post-install": [
                 "install -m a+rx fusermount-wrapper.sh /app/bin/fusermount"
             ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "archive",
-                    "url" : "https://github.com/libfuse/libfuse/releases/download/fuse-2.9.9/fuse-2.9.9.tar.gz",
-                    "sha256" : "d0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5"
+                    "type": "archive",
+                    "url": "https://github.com/libfuse/libfuse/releases/download/fuse-2.9.9/fuse-2.9.9.tar.gz",
+                    "sha256": "d0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5"
                 },
                 {
-                    "type" : "patch",
-                    "path" : "fuse-2.9.2-namespace-conflict-fix.patch"
+                    "type": "patch",
+                    "paths": [
+                        "fuse-disable-sys-mount-under-flatpak.patch",
+                        "fuse-2.9.2-namespace-conflict-fix.patch",
+                        "fuse-closefrom.patch"
+                    ]
                 },
                 {
-                    "type" : "patch",
-                    "path" : "fuse-disable-sys-mount-under-flatpak.patch"
-                },
-                {
-                    "type" : "file",
-                    "path" : "fusermount-wrapper.sh"
+                    "type": "file",
+                    "path": "fusermount-wrapper.sh"
                 }
             ]
         },
@@ -115,7 +84,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/flatpak/flat-manager",
-                    "commit": "804381e0ee4a2afc12832b967d62e496dbe19e54"
+                    "commit": "3340c771cee5844c1083bf0ffee5a3496ae162ac"
                 }
             ]
         }
